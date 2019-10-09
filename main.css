@@ -12,22 +12,13 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-image: url("assets/background.jpg");
-  background: cover;
-  font-family: 'Varela', sans-serif;
-  font-size: 20px;
-}
-
-header, main {
-  background-color: beige;
-  border: none;
-  border-radius: 10px;
 }
 
 header {
   text-align: center;
   padding-left: 10px;
   padding-right: 10px;
+  border: 1px solid black;
 }
 
 h1 {
@@ -37,6 +28,7 @@ h1 {
 main {
   position: relative;
   top: 20px;
+  border: 1px solid black;
 }
 
 form {
@@ -47,38 +39,8 @@ form {
   padding: 15px;
 }
 
-form > label {
-  display: block;
-  align-self: flex-start;
-}
-
-form > input {
-  display: inline-block;
-  width: 60%;
-  height: 20%;
-  display: inline-block;
-  color:black;
-  background-color: rgb(207, 206, 206);
-  padding: 8px;
-  margin-right: 15px;
-  border-radius: 5px;
-  border: none;
-  transition: all 0.4s ease 0s;
-}
-
-form > input:hover {
-  background-color: #434343;
-  color: white;
-  font-size: 1em;
-}
-
-audio {
-  border: 1px solid black;
-}
-
-.feedback {
-  font-size: 30px;
-  font-weight: bold;
+.hidden {
+  display: none;
 }
 
 @media screen and (min-width:500px){
@@ -99,10 +61,6 @@ audio {
 }
 
 @media screen and (max-width:500px) and (min-width:0px){
-  body {        
-      font-size: 16px;
-  }
-
   header {
       width: 90%;
       height: 50px;
@@ -116,9 +74,5 @@ audio {
 
   form {
       height: 250px;
-  }
-
-  .feedback {
-      font-size: 20px;
   }
 }
