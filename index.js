@@ -8,7 +8,6 @@ const baseUrlLastFm = 'https://ws.audioscrobbler.com/2.0/';
 
 let songTitles = [];
 let currentSong;
-let currentGuess = 0;
 
 let mode;
 
@@ -30,8 +29,6 @@ function getPopularSongs(){
     };
     const queryString = formatQueryParams(params)
     const url = baseUrlLastFm + '?' + queryString;
-
-    console.log(url);
   
     fetch(url)
     .then(response => {
@@ -41,7 +38,7 @@ function getPopularSongs(){
         throw new Error(response.statusText);
     })
     .then(responseJson => {
-        for(let i = 0; i<responseJson.tracks.track.length;i++){
+        for(let i = 0; i < responseJson.tracks.track.length; i++){
             songTitles.push(responseJson.tracks.track[i].name);
         }
         getSong();
@@ -57,8 +54,6 @@ function getSong(){
     };
     const queryString = formatQueryParams(params)
     const url = baseUrlDeezer + 'search/?' + queryString;
-
-    console.log(url);
   
     const options = {
         headers: new Headers({
@@ -74,6 +69,7 @@ function getSong(){
         throw new Error(response.statusText);
     })
     .then(responseJson => {
+        //if the song is not found by the Deezer API, try a different song
         if(responseJson.data.length > 0){
             currentSong = {title: responseJson.data[0].title_short, preview: responseJson.data[0].preview};
             playSong();
@@ -92,7 +88,7 @@ function playSong(){
                         <audio controls autoplay><source src="${currentSong.preview}" type="audio/mp3"></audio>
                         <label for="js-guess">Type the name of a song title</label>
                         <input type="text" id="js-guess">
-                        <input type="submit" value="Guess">
+                        <input class="button" type="submit" value="Guess">
                       </form>`;
 
     $('main').html(htmlString);
@@ -100,10 +96,12 @@ function playSong(){
 
 function displayPlayModes(){
     let htmlString = `<form class="js-modes" role="form">
-                        <label>Select a mode of play</label>
-                        <label><input type="radio" name="mode" value="casual" checked="checked">Casual (just for fun)</label>
-                        <label><input type="radio" name="mode" value="challenge">Challenge (you'll be scored)</label>
-                        <input type="submit" value="Submit">
+                        <fieldset>
+                            <legend>Select a mode of play</legend>
+                            <label><input type="radio" name="mode" value="casual" checked="checked">Casual (just for fun)</label>
+                            <label><input type="radio" name="mode" value="challenge">Challenge (you'll be scored)</label>
+                        </fieldset>
+                        <input class="button" type="submit" value="Submit">
                       </form>`;
 
     $('main').html(htmlString);
@@ -116,7 +114,7 @@ function displayHomeScreen(){
 
     let mainHtmlString = `<form class="js-start" role="form">
                         <p>See how many of today's top hits you can recognize!</p>
-                        <input type="submit" value="Play">
+                        <input class="button" type="submit" value="Play">
                     </form>`;
 
     $('main').html(mainHtmlString);    
@@ -162,7 +160,7 @@ function displayResults(){
 
     let newHtmlString = `<form id="js-results" role="form">
                             <p>Congratulations! Your score is ${currentScore}/${NUM_QUESTIONS}</p>
-                            <button type="submit">Try Again</button>
+                            <button class="button" type="submit">Try Again</button>
                         </form>`
     $('main').html(newHtmlString);
 }
@@ -171,7 +169,9 @@ function handleGuess(){
     $('main').on('submit','.js-song',function(event){      
         event.preventDefault();   
         let currentGuess = $('#js-guess').val();
-        let correctResponse = (currentSong.title.toLowerCase().replace(/[^a-zA-Z ]/g, "") === currentGuess.toLowerCase());
+        //remove special characters and make case-insensitive
+        let correctResponse = (currentSong.title.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, "") 
+            === currentGuess.replace(/[^a-zA-Z0-9 ]/g, "").toLowerCase());
 
         if(mode === 'challenge'){
             if(correctResponse){
@@ -206,8 +206,8 @@ function getResultsHtml(correctResponse){
     return `<form class="js-guess-result" role="form">
                 ${formContentsHtmlString}
                 <div>
-                    <input class="js-done ${hidden}" type="button" value="I'm Done">
-                    <input class="js-next-song" type="button" value="Next">
+                    <input class="js-done button ${hidden}" type="button" value="I'm Done">
+                    <input class="js-next-song button" type="button" value="Next">
                 </div>
             </form>`;
 }

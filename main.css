@@ -12,13 +12,19 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-image: url("assets/background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 header {
-  text-align: center;
-  padding-left: 10px;
-  padding-right: 10px;
-  border: 1px solid black;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  border-radius: 5px 5px 0px 0px;
+  background-color: white;
+  font-family: 'Libre Franklin', sans-serif;
+  font-weight: bold;
 }
 
 h1 {
@@ -26,9 +32,10 @@ h1 {
 }
 
 main {
-  position: relative;
-  top: 20px;
-  border: 1px solid black;
+  border-radius: 0px 0px 5px 5px;
+  background-color: white;
+  font-family: 'Merriweather Sans', sans-serif;
+  text-align: left;
 }
 
 form {
@@ -36,43 +43,164 @@ form {
   flex-direction: column;    
   justify-content: space-evenly;
   align-items: center;
-  padding: 15px;
+  padding: 20px;
+  height: 100%;
 }
 
-.hidden {
-  display: none;
+form > * {
+  margin: 10px;
 }
 
-@media screen and (min-width:500px){
+form > div {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+form > div > .button {
+  margin: 8px;
+}
+
+form > input, audio {
+  width: 90%;
+}
+
+input[type=radio] {
+  margin-right: 5px;
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+fieldset > * {  
+  display: block;
+}
+
+fieldset > legend {
+  font-size: 1.1em;
+}
+
+fieldset > label {  
+  margin-top: 10px;
+}
+
+.button {
+  width: 60%;
+  height: 50px;
+  color:black;
+  background-color: rgb(207, 206, 206);
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  transition: all 0.4s ease 0s;
+}
+
+.button:hover {
+  background-color: #434343;
+  color: white;
+  font-size: 1.1em;
+}
+
+@media screen and (min-width:700px){
   header {
-      width: 450px;
-      height: 100px;
-      line-height: 100px;
+    width: 600px;
+    height: 100px;
+    line-height: 100px;
+  }
+
+  h1 {    
+    font-size: 28pt;
+  }
+
+  header > span {
+    font-size: 22pt;
   }
 
   main {
-      width: 450px;
-      height: 300px;
-  }
-
-  form {
-      height: 300px;
+    width: 600px;
+    height: 400px;
+    font-size: 22pt;
+    line-height: 28pt;
   }
 }
 
-@media screen and (max-width:500px) and (min-width:0px){
+@media screen and (min-width:500px) and (max-width:699px){
   header {
-      width: 90%;
-      height: 50px;
-      line-height: 50px;
+    width: 450px;
+    height: 100px;
+    line-height: 100px;
+  }
+
+  h1 {    
+    font-size: 28pt;
+  }
+
+  header > span {
+    font-size: 18pt;
   }
 
   main {
-      width: 90%;
-      height: 250px;
+    width: 450px;
+    height: 300px;
+    font-size: 18pt;
+    line-height: 26pt;
+  }
+}
+
+@media screen and (min-width:382px) and (max-width:499px){
+  header {
+    width: 90%;
+    height: 80px;
   }
 
-  form {
-      height: 250px;
+  h1 {    
+    font-size: 22pt;
+    line-height: 80px;
+  }
+
+  header > span {
+    font-size: 16pt;
+    line-height: 60px;
+    margin: 10px;
+  }
+
+  main {
+    width: 90%;
+    height: 280px;
+    font-size: 16pt;
+    line-height: 20pt;
+  }
+}
+
+@media screen and (min-width:0px) and (max-width:381px){
+  header {
+    width: 90%;
+    height: 80px;
+  }
+
+  h1 {    
+    font-size: 22pt;
+    line-height: 80px;
+  }
+
+  header > span {
+    font-size: 16pt;
+    line-height: 30px;
+    margin: 10px;
+  }
+
+  main {
+    width: 90%;
+    height: 280px;
+    font-size: 14pt;
+    line-height: 18pt;
+  }
+
+  .button {
+    height: 40px;
   }
 }
