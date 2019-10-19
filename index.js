@@ -39,7 +39,8 @@ function getPopularSongs(){
     })
     .then(responseJson => {
         for(let i = 0; i < responseJson.tracks.track.length; i++){
-            songTitles.push(responseJson.tracks.track[i].name);
+            let songTitle = standardizeSongTitle(responseJson.tracks.track[i].name);
+            songTitles.push(songTitle);
         }
         getSong();
     })
@@ -48,10 +49,20 @@ function getPopularSongs(){
     });                
 }
 
-function getSong(){
+function getSong(i){
+    //if all songs have been pitched to user, go through list again
+    if(songTitles.length === 0){
+        getPopularSongs();
+        return;
+    }
+
+    let indexOfRandomSong = Math.floor(Math.random() * songTitles.length);
     const params = {
-      q: songTitles[Math.floor(Math.random() * songTitles.length)]
+      q: songTitles[indexOfRandomSong]
     };
+    //remove song from list to prevent repeats
+    songTitles.splice(indexOfRandomSong,1);
+
     const queryString = formatQueryParams(params)
     const url = baseUrlDeezer + 'search/?' + queryString;
   
@@ -59,7 +70,7 @@ function getSong(){
         headers: new Headers({
           "X-RapidApi-Key": apiKeyDeezer
         })
-      };;
+      };
 
     fetch(url ,options)
     .then(response => {
@@ -71,7 +82,9 @@ function getSong(){
     .then(responseJson => {
         //if the song is not found by the Deezer API, try a different song
         if(responseJson.data.length > 0){
-            currentSong = {title: responseJson.data[0].title_short, preview: responseJson.data[0].preview};
+            let songTitle = standardizeSongTitle(responseJson.data[0].title_short);
+
+            currentSong = {title: songTitle, preview: responseJson.data[0].preview};
             playSong();
         }
         else{
@@ -81,6 +94,14 @@ function getSong(){
     .catch(error => {
         $('main').append(`<p>Something went wrong: ${error.message}</p>`);
     });                
+}
+
+function standardizeSongTitle(songTitle){
+    if( songTitle.includes('(')){
+        songTitle = songTitle.substring(0, songTitle.indexOf('(')).trim();
+    }
+
+    return songTitle;
 }
 
 function playSong(){
