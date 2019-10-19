@@ -22,6 +22,7 @@ function formatQueryParams(params) {
 }
 
 function getPopularSongs(){
+    displayLoader();
     const params = {
         method: "chart.gettoptracks",
         format: "json",
@@ -43,8 +44,10 @@ function getPopularSongs(){
             songTitles.push(songTitle);
         }
         getSong();
+        displayLoader();
     })
     .catch(error => {
+        removeLoader();
         $('main').append(`<p>Something went wrong: ${error.message}</p>`);
     });                
 }
@@ -55,6 +58,8 @@ function getSong(i){
         getPopularSongs();
         return;
     }
+
+    displayLoader();
 
     let indexOfRandomSong = Math.floor(Math.random() * songTitles.length);
     const params = {
@@ -90,8 +95,11 @@ function getSong(i){
         else{
             getSong();
         }
+        
+        removeLoader();
     })
     .catch(error => {
+        removeLoader();
         $('main').append(`<p>Something went wrong: ${error.message}</p>`);
     });                
 }
@@ -163,9 +171,17 @@ function handleMode(){
             updateQuestionTracker();
             updateScoreTracker();
         }
-
+        displayLoader();
         getPopularSongs();
     });
+}
+
+function displayLoader(){    
+    $('main').html(`<div class="loader"></div>`);
+}
+
+function removeLoader(){
+    $('.loader').addClass('hidden');
 }
 
 function updateQuestionTracker(){
